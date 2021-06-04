@@ -25,7 +25,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Abbas
  */
 public class Compilers2ScannerAlgorithm {
+    //Errors Locks
     int freeze = 0,freeze2=0;
+    //Defining lexemes
     static String assignmentOperator = "=";
     static String accessOperator = ".";
     static String brace = ",";
@@ -45,12 +47,6 @@ public class Compilers2ScannerAlgorithm {
     static String Struct = "STT";
     static String startStatement = "Beginning";
     static String endStatement = "End";
-    //static String singleLineComment = "/-";
-    
-    
-    static String lexeme = "";
-    static Scanner code;
-    
     
     static List logicOperators = new ArrayList();
     static List relationalOperators = new ArrayList();
@@ -62,27 +58,32 @@ public class Compilers2ScannerAlgorithm {
     static List brackets = new ArrayList();
     static List errorLines = new ArrayList();
     
+    // lexeme will carry every word
+    static String lexeme = "";
+    // code have the code file path
+    static Scanner code;
     
     
-    static int errors = 0;
-        int lexemeNumber = 0;
-        static String token = "";
-        int line = 1;
-        static String matchability = "Matched";
-        int isMultipleLinesComment = 0;
-        int isSingleLineComment = 0;
-        int currentLine = 1;
-        int previousLine = 1;
-        int newLine = 0;
-        char c =' ';
+    
+    
+    
+    static int errors = 0;//number of errors
+    int lexemeNumber = 0;
+    static String token = "";
+    static String matchability = "Matched";
+    //Comment Locks
+    int isMultipleLinesComment = 0;
+    int isSingleLineComment = 0;
+    int currentLine = 1;
+    int previousLine = 1;
         
         
     
     
     public void Scanner(JTextArea ta, JTable t, String codeFilePath, JLabel l) throws FileNotFoundException, IOException{
-        int x = 0;
-        int allow = 1;
+        //Casting table
         DefaultTableModel model = (DefaultTableModel) t.getModel();
+        //Adding Lexemes
         logicOperators.add("&&");
         logicOperators.add("||");
         logicOperators.add("~");
@@ -119,22 +120,21 @@ public class Compilers2ScannerAlgorithm {
         brackets.add("(");
         brackets.add(")");
         
-        int possibleError = 0;
-        
+        //Lex carry whole word
         String lex = "";
         code = new Scanner(new File(codeFilePath));
+        //table row
         int counter = -1;
-        int allowArithmatic = 1;
-        
+        //read file line by line
         LineNumberReader r = new LineNumberReader(new FileReader(codeFilePath));
         String Line="";
         lexeme = "";
         lex = "";
+        //read file line by line continued
         while ((Line = r.readLine()) != null) {
             lexemeNumber=0;
             lexeme = "";
             lex = "";
-            System.out.println("while1");
             
             
             Scanner code = new Scanner(Line);
@@ -142,36 +142,36 @@ public class Compilers2ScannerAlgorithm {
             while (code.hasNext()) {
                 lexeme = "";
                 lex="";
-                System.out.println("while2");
                 
                 
-                int i = -1;
-                int sliceFlag = 0;
+                int i = -1;//Check if this is single character
+                int sliceFlag = 0;//Make a single character get into the detection operation alone
                 
-                lex = code.next();
+                lex = code.next();// lex carry a word in the file
                
                 StringBuilder s = new StringBuilder(lex);
-                s.append("ْ");
+                s.append("ْ");// adding strange rare character to guarantee releasing the last lexeme in the lex
                 lex = String.valueOf(s);
                 
+                //Check if we are in a new line to unlock the single comment lock
                 currentLine = r.getLineNumber();
                 if(currentLine>previousLine){
                     isSingleLineComment = 0;
-                    allow = 1;
+                    
                 }
-                
+                //while loop for cutting(lex) the word into lexemes
                 while(!lex.isEmpty()){
                     
                     i++;
             
                     if(sliceFlag!=1){
-                
+                        //transfer 1st character of lex to lexeme
                         lexeme = lexeme + lex.charAt(0);
+                        //deleting the transfered character from the lex
                         StringBuilder sbd = new StringBuilder(lex);
                         sbd.delete(0, 1);
                         lex = String.valueOf(sbd);
-                        System.out.println("lex: "+lex);
-                        System.out.println("lexeme: "+lexeme);
+                        //Checking errors locks
                         if(freeze == 1){
                             if(!((int)lexeme.charAt(lexeme.length()-1)>=65 && (int)lexeme.charAt(lexeme.length()-1)<=90) && !((int)lexeme.charAt(lexeme.length()-1)>=97 && (int)lexeme.charAt(lexeme.length()-1)<=122) && (int)lexeme.charAt(lexeme.length()-1) != 95 && !((int)lexeme.charAt(lexeme.length()-1)>=48&&(int)lexeme.charAt(lexeme.length()-1)<=57)){
                                 freeze=0;
@@ -186,25 +186,26 @@ public class Compilers2ScannerAlgorithm {
                     }
                     
                     sliceFlag = 0;
-                    
+                    //Checking Comments Locks
                     if(isMultipleLinesComment!=1 && isSingleLineComment!=1){
-                        
+                        //Detecting lexemes
                         if('/'==lexeme.charAt(lexeme.length()-1) && lex.charAt(0) == '-'){
                             
-                            isSingleLineComment = 1;
+                            isSingleLineComment = 1;//activate lock
                             previousLine = r.getLineNumber();
                             counter++;
                             lexemeNumber++;
+                            //insert in table
                             model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), "/-", "Comment", String.valueOf(lexemeNumber), "Matched"});
                             
                         }
                         else if('/'==lexeme.charAt(lexeme.length()-1) && lex.charAt(0) == '#'){
-                            isMultipleLinesComment = 1;
+                            isMultipleLinesComment = 1;//activate lock
                             counter++;
                             lexemeNumber++;
+                            //insert in table
                             model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), "/#", "Comment", String.valueOf(lexemeNumber), "Matched"});
                             
-                            System.out.println("is:"+isMultipleLinesComment);
                         }
                         else if(logicOperators.contains(lexeme)){
                             token = "Logic Operator";
@@ -253,7 +254,7 @@ public class Compilers2ScannerAlgorithm {
                         }
                         else if(accessOperator.equals(lexeme)){
                             token = "Access Operator";
-                            System.out.println((int)lex.charAt(0));
+                            //Error possibility
                             if( (int)lex.charAt(0)>=48 && (int)lex.charAt(0)<=57){
                                 token = "Error";
                                 freeze2 = 1;
@@ -335,18 +336,18 @@ public class Compilers2ScannerAlgorithm {
                             token = "IDENTIFIER";
                         }
                         else{
-                            if(i!=0){
+                            if(i!=0){//Checking if the lexeme carries a single character
                                 if(isSingleLineComment!=1 && isMultipleLinesComment!=1){
                                     
                                     int Ascii_sbl = (int)lexeme.charAt(lexeme.length()-1);
                                     
-                                    if("".equals(token)){
+                                    if("".equals(token)){//Possibility of error
                                         token = "Error";
                                         errorLines.add(r.getLineNumber());
                                         errors++;
                                         matchability = "Not Matched";
                                     }
-                                    else if("Constant".equals(token)){
+                                    else if("Constant".equals(token)){//possibility of error
                                         if((Ascii_sbl>=65 && Ascii_sbl<=90) || (Ascii_sbl>=97 && Ascii_sbl<=122) || Ascii_sbl == 95 ){
                                             token = "Error";
                                             freeze = 1;
@@ -359,22 +360,24 @@ public class Compilers2ScannerAlgorithm {
                                     }
                                     
                                     
-                                    if(freeze !=1 && freeze2 !=1){
+                                    if(freeze !=1 && freeze2 !=1){//checking error locks
                                         matchability = "Matched";
                                         if("Error".equals(token)){
                                             matchability = "Not Matched";
                                         }
+                                        //separating last character from the previos characters
                                         StringBuilder sbl = new StringBuilder(lexeme);
                                         sbl.delete(lexeme.length()-1, lexeme.length());
                                         lexemeNumber++;
                                         counter++;
-                                        
+                                        //inserting info into table
                                         model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), sbl, token, String.valueOf(lexemeNumber), matchability});
+                                        //make lexeme is equal to the last character
                                         lexeme = String.valueOf(lexeme.charAt(lexeme.length()-1));
 
 
-                                        l.setText(String.valueOf(errors));
-                                        sliceFlag = 1;
+                                        l.setText(String.valueOf(errors));//put no of errors into label
+                                        sliceFlag = 1;//let the character get alone into detection proccess
                                         token = "";
                                         i = -1;
                                     }
@@ -389,9 +392,9 @@ public class Compilers2ScannerAlgorithm {
                         }
                         
                     }
-                    if(isMultipleLinesComment == 1)
+                    if(isMultipleLinesComment == 1){
                         if('#'==lexeme.charAt(lexeme.length()-1) && lex.charAt(0) == '/'){
-                            isMultipleLinesComment = 0;
+                            isMultipleLinesComment = 0;//unlock multiple comment
                             lex = "";
                             
                             lexemeNumber++;
@@ -399,6 +402,7 @@ public class Compilers2ScannerAlgorithm {
                             model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), "#/", "Comment", String.valueOf(lexemeNumber), "Matched"});
                                 
                         }
+                    }
                 }
             }
         }
@@ -459,19 +463,20 @@ public class Compilers2ScannerAlgorithm {
         int restOfCharacters=0;
         int isIdentifier = 0;
         
-        if(lex.length() == 1){
+        if(lex.length() == 1){//if lex is one character
             if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){
                 firstCharacter =1;
                 restOfCharacters =1;
             }
         }
-        else{
-            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){
+        else{// if lex is multiple characters
+            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){//checking 1st character
                 firstCharacter =1;
                 
             }
             for(int i = 1;i<lex.length();i++){
             chAsciiR = (int)lex.charAt(i);
+            //checking rest of characters
             if( (chAsciiR>=65 && chAsciiR<=90) || (chAsciiR>=97 && chAsciiR<=122) || chAsciiR == 95 || (chAsciiR>=48&&chAsciiR<=57) ){
                 restOfCharacters = 1;
             }
