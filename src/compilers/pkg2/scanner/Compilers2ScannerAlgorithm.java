@@ -459,14 +459,18 @@ public class Compilers2ScannerAlgorithm {
         int restOfCharacters=0;
         int isIdentifier = 0;
         
-        try{
-        Integer.parseInt(String.valueOf(lex.charAt(0)));
+        if(lex.length() == 1){
+            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95 || (chAsciiR>=48&&chAsciiR<=57)){
+                firstCharacter =1;
+                restOfCharacters =1;
+            }
         }
-        catch(Exception e){System.out.println("");}
-        if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95 ){
-            firstCharacter =1;
-        }
-        for(int i = 1;i<lex.length();i++){
+        else{
+            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95 || (chAsciiR>=48&&chAsciiR<=57)){
+                firstCharacter =1;
+                restOfCharacters =1;
+            }
+            for(int i = 1;i<lex.length();i++){
             chAsciiR = (int)lex.charAt(i);
             if( (chAsciiR>=65 && chAsciiR<=90) || (chAsciiR>=97 && chAsciiR<=122) || chAsciiR == 95 || (chAsciiR>=48&&chAsciiR<=57) ){
                 restOfCharacters = 1;
@@ -476,6 +480,9 @@ public class Compilers2ScannerAlgorithm {
                 break;
             }
         }
+            
+        }
+        
         
         if(firstCharacter == 1 && restOfCharacters == 1){
             isIdentifier = 1;
