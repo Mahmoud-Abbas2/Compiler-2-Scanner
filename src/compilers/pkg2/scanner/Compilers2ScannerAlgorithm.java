@@ -468,7 +468,7 @@ public class Compilers2ScannerAlgorithm {
         else{
             if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){
                 firstCharacter =1;
-                restOfCharacters =1;
+                
             }
             for(int i = 1;i<lex.length();i++){
             chAsciiR = (int)lex.charAt(i);
