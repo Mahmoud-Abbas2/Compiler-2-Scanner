@@ -460,13 +460,13 @@ public class Compilers2ScannerAlgorithm {
         int isIdentifier = 0;
         
         if(lex.length() == 1){
-            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95 || (chAsciiR>=48&&chAsciiR<=57)){
+            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){
                 firstCharacter =1;
                 restOfCharacters =1;
             }
         }
         else{
-            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95 || (chAsciiR>=48&&chAsciiR<=57)){
+            if( (chAscii0>=65 && chAscii0<=90) || (chAscii0>=97 && chAscii0<=122) || chAscii0 == 95){
                 firstCharacter =1;
                 restOfCharacters =1;
             }
