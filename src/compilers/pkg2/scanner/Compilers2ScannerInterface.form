@@ -1410,13 +1410,11 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
         else{
             String allCharacters = jTextArea1.getText();
             int currentLetterPosition=jTextArea1.getSelectionEnd();
-            
+            try{
             char currentLetter = allCharacters.charAt(currentLetterPosition-1);
             if(currentLetter!=' '&&currentLetter!='\n'){
                 _1st4letters = _1st4letters + currentLetter;
-                System.out.println(_1st4letters.length());
                 if(_1st4letters.length() == 4){
-                    System.out.println("fffff"+_1st4letters);
                     
                     for(int j = 0;j<13;j++){
                         for(int k = 0;k<4;k++){
@@ -1425,12 +1423,9 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
                            
                     
                         }
-                        System.out.println("qqqq"+_1st4letterReserved);
-                         if(_1st4letterReserved.equals(_1st4letters)){
-                                System.out.println("yes");
+                        if(_1st4letterReserved.equals(_1st4letters)){
                                 int start = jTextArea1.getSelectionEnd()-3;
                                 int end = jTextArea1.getSelectionEnd();
-                                System.out.println("**"+start+"**"+end);
                                 String Reserved = "";
                                 for(int n = 1;n<=reservedWords[j].length()-1;n++){
                                     Reserved = Reserved + reservedWords[j].charAt(n);
@@ -1448,7 +1443,7 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
                 _1st4letters = "";
                 _1st4letterReserved="";
             }
-           
+            }catch(Exception e){System.out.println("");}
             
         }
         
