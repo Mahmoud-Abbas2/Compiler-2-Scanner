@@ -28,6 +28,7 @@ public class Compilers2ScannerAlgorithm {
     //Errors Locks
     int freeze = 0,freeze2=0;
     //Defining lexemes
+    int commentDetected = 0;
     static String assignmentOperator = "=";
     static String accessOperator = ".";
     static String brace = ",";
@@ -162,7 +163,13 @@ public class Compilers2ScannerAlgorithm {
                 //while loop for cutting(lex) the word into lexemes
                 while(!lex.isEmpty()){
                     
+                    if(commentDetected == 1){
+                        commentDetected = 0;
+                        break;
+                    }
+                    
                     i++;
+                    
             
                     if(sliceFlag!=1){
                         //transfer 1st character of lex to lexeme
@@ -205,7 +212,7 @@ public class Compilers2ScannerAlgorithm {
                             lexemeNumber++;
                             //insert in table
                             model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), "/#", "Comment", String.valueOf(lexemeNumber), "Matched"});
-                            
+                            commentDetected = 1;
                         }
                         else if(logicOperators.contains(lexeme)){
                             token = "Logic Operator";
