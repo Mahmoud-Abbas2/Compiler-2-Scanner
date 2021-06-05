@@ -1403,29 +1403,11 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
     }                                        
 
     private void jTextArea1KeyReleased(java.awt.event.KeyEvent evt) {                                       
+        
         if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getKeyCode()==KeyEvent.VK_DELETE){
-            
+        //to let me delete ab back after autocomplete    
         }
         else{
-            /*String toCheck = jTextArea1.getText();
-            int toCheckLen = toCheck.length();
-            for(String data:s){
-                String checkFromData = "";
-                for(int i = 0;i<toCheckLen;i++){
-                    if(toCheckLen<=data.length()){
-                        checkFromData = checkFromData + data.charAt(i);
-                        
-                    }
-                }
-                
-                if(checkFromData.equals(toCheck)){
-                    
-                    jTextArea1.setText(data);
-                    jTextArea1.setSelectionStart(toCheckLen);
-                    jTextArea1.setSelectionEnd(data.length());
-                   break;
-                }
-            }*/
             String allCharacters = jTextArea1.getText();
             int currentLetterPosition=jTextArea1.getSelectionEnd();
             
@@ -1468,7 +1450,6 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
             }
            
             
-            //System.out.println(currentLetterPosition);
         }
         
     }                                      
