@@ -1363,7 +1363,9 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
     }                                        
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-       comment = 1;//comment mode active
+       if(comment == 0){
+        comment = 1;//comment mode active
+        
        try{
             FileWriter rw = new FileWriter("Files/Comment.txt");
             rw.write("/#"+jTextArea1.getText()+"#/");//prepare comment format
@@ -1380,6 +1382,7 @@ public class Compilers2ScannerInterface extends javax.swing.JFrame {
             }
         }catch(Exception e){
            System.out.println("");
+       }
        }
     }                                        
 
