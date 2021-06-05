@@ -390,8 +390,8 @@ public class Compilers2ScannerAlgorithm {
                                 }
                             }
                         }
-                        
-                    }
+                    }    
+                    
                     if(isMultipleLinesComment == 1){
                         if('#'==lexeme.charAt(lexeme.length()-1) && lex.charAt(0) == '/'){
                             isMultipleLinesComment = 0;//unlock multiple comment
@@ -403,6 +403,7 @@ public class Compilers2ScannerAlgorithm {
                                 
                         }
                     }
+                    
                 }
             }
         }
@@ -484,7 +485,7 @@ public class Compilers2ScannerAlgorithm {
                 restOfCharacters = 0;
                 break;
             }
-        }
+            }
             
         }
         
