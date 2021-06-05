@@ -414,6 +414,14 @@ public class Compilers2ScannerAlgorithm {
                 }
             }
         }
+        if((Line = r.readLine()) == null&& isMultipleLinesComment == 1){
+            lexemeNumber++;
+            counter++;
+            errorLines.add(r.getLineNumber());
+            errors++;
+            model.insertRow(counter, new Object[]{String.valueOf(r.getLineNumber()), "No closen comment found", "Error", String.valueOf(lexemeNumber), "Not Matched"});
+                                
+        }
     }
 
     static int isNumber(String s)
